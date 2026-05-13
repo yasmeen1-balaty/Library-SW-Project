@@ -55,3 +55,90 @@
   transform: scale(1.08);
   filter: brightness(1.08);
 }
+
+.book-card {
+  transition: all 0.35s ease;
+  cursor: pointer;
+}
+
+.book-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 18px 40px rgba(74, 4, 4, 0.18) !important;
+}
+
+.book-img {
+  transition: all 0.5s ease;
+}
+
+.book-card:hover .book-img {
+  transform: scale(1.08);
+}
+
+.book-card {
+  transition: all 0.35s ease;
+  border-radius: 16px !important;
+  overflow: hidden;
+  background: #fffdfa;
+}
+
+.book-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 45px rgba(74, 4, 4, 0.18) !important;
+}
+
+.book-img-box {
+  height: 230px;
+  overflow: hidden;
+  background: #eee;
+}
+
+.book-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: all 0.5s ease;
+}
+
+.book-card:hover .book-img {
+  transform: scale(1.08);
+}
+
+.book-title {
+  color: #2d0a0a;
+  min-height: 55px;
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+.details-btn {
+  border: 2px solid #4a0404 !important;
+  color: #4a0404 !important;
+  border-radius: 10px !important;
+  transition: 0.3s;
+}
+
+.details-btn:hover {
+  background-color: #4a0404 !important;
+  color: white !important;
+}
+
+.download-btn {
+  border-radius: 10px !important;
+}
+
+.footer-link {
+  color: #d6d6d6;
+  text-decoration: none;
+  transition: 0.25s ease;
+}
+
+.footer-link:hover {
+  color: #d4a017;
+}
+
+.footer-contact {
+  color: #d6d6d6;
+}
+body {
+  padding-top: 72px;
+}
