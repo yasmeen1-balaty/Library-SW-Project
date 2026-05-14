@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Catalog from "./pages/Catalog";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
+import BookDetails from "./pages/Bookdetails";
 function App() {
   return (
     <BrowserRouter>
@@ -14,6 +15,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/catalog" element={<Catalog />} />
+        <Route path="/book/:id" element={<BookDetails />} />
       </Routes>
       <Footer />
     </BrowserRouter>
