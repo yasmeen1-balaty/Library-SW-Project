@@ -5,19 +5,34 @@ export default function StudentPortal() {
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
   const userRole = localStorage.getItem('userRole');
 
-  // جلب البيانات المخزنة من localStorage
   const userName =
     localStorage.getItem('userName') || 'طالب مستجد';
 
   const userEmail =
-    localStorage.getItem('userEmail') ||
-    'example@college.edu';
+    localStorage.getItem('userEmail') || 'example@college.edu';
 
-  // بيانات ثابتة للمناقشة (سيتم استبدالها لاحقاً بالباك إند)
+  // ✅ Fix مهم: حماية JSON.parse من null
+  const reservations = JSON.parse(
+    localStorage.getItem('reservations') || '[]'
+  );
+
   const academicInfo = {
     id: '202110542',
     major: 'تمريض - سنة ثالثة',
     expiry: 'يونيو 2025',
+  };
+
+  const handleCancelReservation = (id) => {
+    const updatedReservations = reservations.filter(
+      (book) => book.id !== id
+    );
+
+    localStorage.setItem(
+      'reservations',
+      JSON.stringify(updatedReservations)
+    );
+
+    window.location.reload();
   };
 
   if (!isLoggedIn) return <Navigate to="/login" />;
@@ -34,7 +49,6 @@ export default function StudentPortal() {
     >
       <div className="container">
 
-        {/* هيدر الصفحة (البطاقة الشخصية) */}
         <div
           className="bg-white shadow-lg overflow-hidden mb-5"
           style={{
@@ -81,9 +95,7 @@ export default function StudentPortal() {
                   : userName}
               </h1>
 
-              <p
-                className="text-secondary fw-medium text-end"
-              >
+              <p className="text-secondary fw-medium text-end">
                 {userRole === 'librarian'
                   ? 'المسؤول عن إدارة المراجع'
                   : `${academicInfo.major} | الرقم الجامعي: ${academicInfo.id}`}
@@ -117,37 +129,23 @@ export default function StudentPortal() {
           </div>
         </div>
 
-        {/* محتوى الصفحة بناءً على الصلاحية */}
         {userRole === 'librarian' ? (
-          /* واجهة الإدارة (أمين المكتبة) */
           <div className="row g-4">
             <div className="col-12 col-md-6">
               <div
                 className="bg-white p-4 text-center shadow-sm h-100"
-                style={{
-                  borderTop: '4px solid #ca8a04',
-                }}
+                style={{ borderTop: '4px solid #ca8a04' }}
               >
-                <h3
-                  className="fw-bold mb-2"
-                  style={{
-                    fontSize: '22px',
-                    color: '#4A0404',
-                  }}
-                >
+                <h3 className="fw-bold mb-2" style={{ fontSize: '22px', color: '#4A0404' }}>
                   إدارة الفهرس
                 </h3>
 
                 <p className="text-secondary mb-4">
-                  تحديث بيانات الكتب، إضافة مراجع جديدة،
-                  أو حذف كتب قديمة.
+                  تحديث بيانات الكتب، إضافة مراجع جديدة، أو حذف كتب قديمة.
                 </p>
 
                 <button
-                  onClick={() =>
-                    (window.location.href =
-                      '/admin/add-book')
-                  }
+                  onClick={() => (window.location.href = '/admin/add-book')}
                   className="btn text-white fw-bold shadow-sm"
                   style={{
                     backgroundColor: '#4A0404',
@@ -163,29 +161,19 @@ export default function StudentPortal() {
             <div className="col-12 col-md-6">
               <div
                 className="bg-white p-4 text-center shadow-sm h-100"
-                style={{
-                  borderTop: '4px solid #2563eb',
-                }}
+                style={{ borderTop: '4px solid #2563eb' }}
               >
-                <h3
-                  className="fw-bold mb-2"
-                  style={{
-                    fontSize: '22px',
-                    color: '#4A0404',
-                  }}
-                >
+                <h3 className="fw-bold mb-2" style={{ fontSize: '22px', color: '#4A0404' }}>
                   طلبات الاستعارة
                 </h3>
 
                 <p className="text-secondary mb-4">
-                  مراجعة طلبات الحجز المقدمة من الطلاب
-                  (3 طلبات جديدة).
+                  مراجعة الطلبات المقدمة من الطلاب.
                 </p>
 
                 <button
                   onClick={() =>
-                    (window.location.href =
-                      '/admin/manage-requests')
+                    (window.location.href = '/admin/manage-requests')
                   }
                   className="btn text-white fw-bold shadow-sm"
                   style={{
@@ -200,79 +188,46 @@ export default function StudentPortal() {
             </div>
           </div>
         ) : (
-          /* واجهة الطالب (السجل الشخصي) */
           <div className="row g-4 text-end">
 
-            {/* إحصائيات سريعة */}
             <div className="col-12 col-lg-4">
               <div className="d-flex flex-column gap-4">
 
                 <div
                   className="bg-white p-4 shadow-sm"
-                  style={{
-                    borderRight: '4px solid #16a34a',
-                  }}
+                  style={{ borderRight: '4px solid #16a34a' }}
                 >
-                  <h3
-                    className="text-muted fw-bold text-uppercase mb-1"
-                    style={{ fontSize: '12px' }}
-                  >
-                    كتب بحوزتك الآن
+                  <h3 className="text-muted fw-bold text-uppercase mb-1" style={{ fontSize: '12px' }}>
+                    طلبات الحجز الحالية
                   </h3>
 
-                  <p
-                    className="fw-bold mb-0"
-                    style={{
-                      fontSize: '36px',
-                      color: '#4A0404',
-                    }}
-                  >
-                    2
+                  <p className="fw-bold mb-0" style={{ fontSize: '36px', color: '#4A0404' }}>
+                    {reservations.length}
                   </p>
                 </div>
 
                 <div
                   className="bg-white p-4 shadow-sm"
-                  style={{
-                    borderRight: '4px solid #eab308',
-                  }}
+                  style={{ borderRight: '4px solid #eab308' }}
                 >
-                  <h3
-                    className="text-muted fw-bold text-uppercase mb-1"
-                    style={{ fontSize: '12px' }}
-                  >
+                  <h3 className="text-muted fw-bold text-uppercase mb-1" style={{ fontSize: '12px' }}>
                     تاريخ انتهاء العضوية
                   </h3>
 
-                  <p
-                    className="fw-bold mb-0 text-secondary"
-                    style={{ fontSize: '22px' }}
-                  >
+                  <p className="fw-bold mb-0 text-secondary" style={{ fontSize: '22px' }}>
                     {academicInfo.expiry}
                   </p>
                 </div>
               </div>
             </div>
 
-            {/* سجل النشاط */}
             <div className="col-12 col-lg-8">
-              <div
-                className="bg-white shadow-lg p-4"
-                style={{
-                  border: '1px solid #f9fafb',
-                }}
-              >
+              <div className="bg-white shadow-lg p-4" style={{ border: '1px solid #f9fafb' }}>
                 <h3
                   className="fw-bold mb-4 pb-3 d-flex justify-content-between align-items-center"
-                  style={{
-                    color: '#4A0404',
-                    borderBottom: '1px solid #dee2e6',
-                  }}
+                  style={{ color: '#4A0404', borderBottom: '1px solid #dee2e6' }}
                 >
-                  <span
-                    className="fw-normal text-muted fst-italic"
-                    style={{ fontSize: '14px' }}
-                  >
+                  <span className="fw-normal text-muted fst-italic" style={{ fontSize: '14px' }}>
                     آخر تحديث: اليوم
                   </span>
 
@@ -281,90 +236,69 @@ export default function StudentPortal() {
 
                 <div className="d-flex flex-column gap-3">
 
-                  <div
-                    className="d-flex justify-content-between align-items-center p-4"
-                    style={{
-                      backgroundColor: '#fffdfa',
-                      border: '1px solid #f3f4f6',
-                      borderRadius: '4px',
-                    }}
-                  >
-                    <span
-                      className="fw-bold"
+                  {reservations.length === 0 ? (
+                    <div
+                      className="text-center p-4"
                       style={{
-                        backgroundColor: '#f0fdf4',
-                        color: '#15803d',
-                        padding: '6px 16px',
-                        borderRadius: '999px',
-                        border: '1px solid #dcfce7',
-                        fontSize: '12px',
+                        backgroundColor: '#fffdfa',
+                        border: '1px solid #f3f4f6',
+                        borderRadius: '4px',
                       }}
                     >
-                      تحت يدك
-                    </span>
-
-                    <div className="text-end">
-                      <h4
-                        className="fw-bold"
-                        style={{ color: '#4A0404' }}
-                      >
-                        أساسيات التمريض السريري
-                      </h4>
-
-                      <p
-                        className="text-muted mt-1 mb-0"
-                        style={{ fontSize: '12px' }}
-                      >
-                        تاريخ الاستلام: 10/05/2024
+                      <p className="mb-0 text-muted">
+                        لا توجد حجوزات حالياً
                       </p>
                     </div>
-                  </div>
-
-                  <div
-                    className="d-flex justify-content-between align-items-center p-4"
-                    style={{
-                      backgroundColor: '#fffdfa',
-                      border: '1px solid #f3f4f6',
-                      borderRadius: '4px',
-                      opacity: '0.7',
-                    }}
-                  >
-                    <span
-                      className="fw-bold"
-                      style={{
-                        backgroundColor: '#fefce8',
-                        color: '#a16207',
-                        padding: '6px 16px',
-                        borderRadius: '999px',
-                        border: '1px solid #fef08a',
-                        fontSize: '12px',
-                      }}
-                    >
-                      قيد المعالجة
-                    </span>
-
-                    <div className="text-end">
-                      <h4
-                        className="fw-bold"
-                        style={{ color: '#4A0404' }}
+                  ) : (
+                    reservations.map((book) => (
+                      <div
+                        key={book.id}
+                        className="d-flex justify-content-between align-items-center p-4"
+                        style={{
+                          backgroundColor: '#fffdfa',
+                          border: '1px solid #f3f4f6',
+                          borderRadius: '4px',
+                        }}
                       >
-                        علم الأدوية التمريضي
-                      </h4>
+                        <div className="d-flex gap-2">
+                          <button
+                            onClick={() => handleCancelReservation(book.id)}
+                            className="btn btn-sm btn-outline-danger fw-bold"
+                          >
+                            إلغاء
+                          </button>
 
-                      <p
-                        className="text-muted mt-1 mb-0"
-                        style={{ fontSize: '12px' }}
-                      >
-                        طلب حجز مقدم إلكترونياً
-                      </p>
-                    </div>
-                  </div>
+                          <span
+                            className="fw-bold"
+                            style={{
+                              backgroundColor: '#fefce8',
+                              color: '#a16207',
+                              padding: '6px 16px',
+                              borderRadius: '999px',
+                              border: '1px solid #fef08a',
+                              fontSize: '12px',
+                            }}
+                          >
+                            {book.status || 'قيد المعالجة'}
+                          </span>
+                        </div>
+
+                        <div className="text-end">
+                          <h4 className="fw-bold" style={{ color: '#4A0404' }}>
+                            {book.title}
+                          </h4>
+
+                          <p className="text-muted mt-1 mb-0" style={{ fontSize: '12px' }}>
+                            {book.author} | طلب مقدم إلكترونياً
+                          </p>
+                        </div>
+                      </div>
+                    ))
+                  )}
                 </div>
 
                 <button
-                  onClick={() =>
-                    (window.location.href = '/catalog')
-                  }
+                  onClick={() => (window.location.href = '/catalog')}
                   className="btn w-100 fw-bold mt-4"
                   style={{
                     padding: '16px',
