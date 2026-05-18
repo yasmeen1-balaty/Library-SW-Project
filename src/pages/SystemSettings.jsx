@@ -1,6 +1,20 @@
 import React from 'react';
+import { Navigate } from 'react-router-dom';
 
 export default function SystemSettings() {
+
+    const isLoggedIn =
+        localStorage.getItem("isLoggedIn") === "true";
+
+    const userRole =
+        localStorage.getItem("userRole");
+
+    if (!isLoggedIn)
+        return <Navigate to="/login" />;
+
+    if (userRole !== "librarian")
+        return <Navigate to="/" />;
+    
     return (
         <div
             className="min-vh-100 py-5"

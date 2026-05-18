@@ -1,6 +1,20 @@
 import React, { useState } from 'react';
+import { Navigate } from 'react-router-dom';
 
 export default function UserManagement() {
+
+    const isLoggedIn =
+        localStorage.getItem("isLoggedIn") === "true";
+
+    const userRole =
+        localStorage.getItem("userRole");
+
+    if (!isLoggedIn)
+        return <Navigate to="/login" />;
+
+    if (userRole !== "librarian")
+        return <Navigate to="/" />;
+    
     const [users] = useState([
         {
             id: 1,
@@ -43,55 +57,54 @@ export default function UserManagement() {
                             <table className="table table-hover text-end mb-0">
 
                                 <thead className="table-light">
-                                <tr>
-                                    <th className="p-3">الاسم</th>
-                                    <th className="p-3">البريد الإلكتروني</th>
-                                    <th className="p-3">الكتب المستعارة</th>
-                                    <th className="p-3">الحالة</th>
-                                    <th className="p-3 text-center">إجراءات</th>
-                                </tr>
+                                    <tr>
+                                        <th className="p-3">الاسم</th>
+                                        <th className="p-3">البريد الإلكتروني</th>
+                                        <th className="p-3">الكتب المستعارة</th>
+                                        <th className="p-3">الحالة</th>
+                                        <th className="p-3 text-center">إجراءات</th>
+                                    </tr>
                                 </thead>
 
                                 <tbody>
-                                {users.map((user) => (
-                                    <tr key={user.id}>
+                                    {users.map((user) => (
+                                        <tr key={user.id}>
 
-                                        <td className="p-3 fw-bold">
-                                            {user.name}
-                                        </td>
+                                            <td className="p-3 fw-bold">
+                                                {user.name}
+                                            </td>
 
-                                        <td className="p-3 text-muted">
-                                            {user.email}
-                                        </td>
+                                            <td className="p-3 text-muted">
+                                                {user.email}
+                                            </td>
 
-                                        <td className="p-3">
-                                            {user.borrowedBooks}
-                                        </td>
+                                            <td className="p-3">
+                                                {user.borrowedBooks}
+                                            </td>
 
-                                        <td className="p-3">
-                        <span
-                            className={`badge rounded-pill px-3 py-2 ${
-                                user.status === "active"
-                                    ? "bg-success-subtle text-success"
-                                    : "bg-danger-subtle text-danger"
-                            }`}
-                        >
-                          {user.status === "active" ? "نشط" : "موقوف"}
-                        </span>
-                                        </td>
+                                            <td className="p-3">
+                                                <span
+                                                    className={`badge rounded-pill px-3 py-2 ${user.status === "active"
+                                                            ? "bg-success-subtle text-success"
+                                                            : "bg-danger-subtle text-danger"
+                                                        }`}
+                                                >
+                                                    {user.status === "active" ? "نشط" : "موقوف"}
+                                                </span>
+                                            </td>
 
-                                        <td className="p-3 text-center">
-                                            <button className="btn btn-link text-primary text-decoration-none me-2">
-                                                تعديل
-                                            </button>
+                                            <td className="p-3 text-center">
+                                                <button className="btn btn-link text-primary text-decoration-none me-2">
+                                                    تعديل
+                                                </button>
 
-                                            <button className="btn btn-link text-danger text-decoration-none">
-                                                تعطيل
-                                            </button>
-                                        </td>
+                                                <button className="btn btn-link text-danger text-decoration-none">
+                                                    تعطيل
+                                                </button>
+                                            </td>
 
-                                    </tr>
-                                ))}
+                                        </tr>
+                                    ))}
                                 </tbody>
 
                             </table>

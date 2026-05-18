@@ -2,29 +2,53 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
 export default function Login() {
+
   const navigate = useNavigate();
+
   const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleLogin = (e) => {
+
     e.preventDefault();
 
-    // محاكاة تسجيل دخول: إذا الإيميل يحتوي على "admin" يدخل كأمين مكتبة
-    const role = email.includes('admin') ? 'librarian' : 'student';
+    // إذا الإيميل يحتوي admin → يصبح أمين مكتبة
+    const role = email.toLowerCase().includes('admin')
+      ? 'librarian'
+      : 'student';
 
+    // تخزين بيانات الدخول
     localStorage.setItem('userRole', role);
     localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('userEmail', email);
+
+    // إذا لا يوجد اسم مخزن
+    if (!localStorage.getItem('userName')) {
+
+      localStorage.setItem(
+        'userName',
+        role === 'librarian'
+          ? 'أمين المكتبة'
+          : 'طالب مستجد'
+      );
+    }
 
     alert(
       `مرحباً بك! تم تسجيل الدخول بصلاحية: ${
-        role === 'librarian' ? 'أمين مكتبة' : 'طالب'
+        role === 'librarian'
+          ? 'أمين مكتبة'
+          : 'طالب'
       }`
     );
 
     navigate('/');
-    window.location.reload(); // لتحديث الهيدر وإظهار الصلاحيات الجديدة
+
+    // تحديث الواجهة مباشرة
+    window.location.reload();
   };
 
   return (
+
     <div
       className="min-vh-100 d-flex align-items-center justify-content-center pt-5 px-3"
       style={{
@@ -32,6 +56,7 @@ export default function Login() {
         fontFamily: 'serif',
       }}
     >
+
       <div
         className="w-100 bg-white shadow-lg p-4"
         style={{
@@ -40,7 +65,9 @@ export default function Login() {
           borderRadius: '4px',
         }}
       >
+
         <div className="text-center mb-5">
+
           <h2
             className="fw-bold"
             style={{
@@ -54,10 +81,16 @@ export default function Login() {
           <p className="text-secondary mt-2">
             مكتبة كلية الحاجة عندليب العمد
           </p>
+
         </div>
 
-        <form onSubmit={handleLogin} className="text-end">
+        <form
+          onSubmit={handleLogin}
+          className="text-end"
+        >
+
           <div className="mb-4">
+
             <label className="form-label fw-bold text-secondary">
               البريد الإلكتروني أو الرقم الجامعي
             </label>
@@ -66,7 +99,9 @@ export default function Login() {
               type="email"
               required
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) =>
+                setEmail(e.target.value)
+              }
               className="form-control text-end"
               placeholder="example@student.com"
               style={{
@@ -75,9 +110,11 @@ export default function Login() {
                 boxShadow: 'none',
               }}
             />
+
           </div>
 
           <div className="mb-4">
+
             <label className="form-label fw-bold text-secondary">
               كلمة المرور
             </label>
@@ -85,14 +122,19 @@ export default function Login() {
             <input
               type="password"
               required
+              value={password}
+              onChange={(e) =>
+                setPassword(e.target.value)
+              }
               className="form-control text-end"
-              placeholder="**"
+              placeholder="********"
               style={{
                 padding: '12px',
                 borderColor: '#e5e7eb',
                 boxShadow: 'none',
               }}
             />
+
           </div>
 
           <button
@@ -114,10 +156,13 @@ export default function Login() {
           >
             دخول للمكتبة
           </button>
+
         </form>
 
         <p className="text-center mt-4 text-secondary">
+
           ليس لديك حساب؟{' '}
+
           <Link
             to="/register"
             className="fw-bold text-decoration-none"
@@ -125,8 +170,11 @@ export default function Login() {
           >
             إنشاء حساب جديد
           </Link>
+
         </p>
+
       </div>
+
     </div>
   );
 }

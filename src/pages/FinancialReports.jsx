@@ -1,6 +1,19 @@
 import React, { useState } from 'react';
+import { Navigate } from 'react-router-dom';
 
 export default function FinancialReports() {
+    const isLoggedIn =
+        localStorage.getItem("isLoggedIn") === "true";
+
+    const userRole =
+        localStorage.getItem("userRole");
+
+    if (!isLoggedIn)
+        return <Navigate to="/login" />;
+
+    if (userRole !== "librarian")
+        return <Navigate to="/" />;
+    
     const [selectedItem, setSelectedItem] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
 
@@ -168,69 +181,68 @@ export default function FinancialReports() {
                                     color: "white"
                                 }}
                             >
-                            <tr>
-                                <th>الكتاب</th>
-                                <th>الحالة</th>
-                                <th>المصدر</th>
-                                <th className="text-center">إجراءات</th>
-                            </tr>
+                                <tr>
+                                    <th>الكتاب</th>
+                                    <th>الحالة</th>
+                                    <th>المصدر</th>
+                                    <th className="text-center">إجراءات</th>
+                                </tr>
                             </thead>
 
                             <tbody>
-                            {financialData.map((item) => (
-                                <tr
-                                    key={item.id}
-                                    style={{ cursor: "pointer" }}
-                                    onClick={() => openDetails(item)}
-                                >
+                                {financialData.map((item) => (
+                                    <tr
+                                        key={item.id}
+                                        style={{ cursor: "pointer" }}
+                                        onClick={() => openDetails(item)}
+                                    >
 
-                                    <td className="fw-bold">
-                                        {item.title}
-                                    </td>
+                                        <td className="fw-bold">
+                                            {item.title}
+                                        </td>
 
-                                    <td>
-                      <span
-                          className={`badge ${
-                              item.type === "purchase"
-                                  ? "bg-success"
-                                  : "bg-primary"
-                          }`}
-                      >
-                        {item.type === "purchase"
-                            ? "شراء"
-                            : "تبرع"}
-                      </span>
-                                    </td>
+                                        <td>
+                                            <span
+                                                className={`badge ${item.type === "purchase"
+                                                        ? "bg-success"
+                                                        : "bg-primary"
+                                                    }`}
+                                            >
+                                                {item.type === "purchase"
+                                                    ? "شراء"
+                                                    : "تبرع"}
+                                            </span>
+                                        </td>
 
-                                    <td className="text-muted">
-                                        {item.source}
-                                    </td>
+                                        <td className="text-muted">
+                                            {item.source}
+                                        </td>
 
-                                    <td className="text-center">
+                                        <td className="text-center">
 
-                                        <button
-                                            className="btn btn-sm btn-outline-primary me-2"
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                alert("صفحة تعديل");
-                                            }}
-                                        >
-                                            تعديل
-                                        </button>
+                                            <button
+                                                className="btn btn-sm btn-outline-primary me-2"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    alert("صفحة تعديل");
+                                                }}
+                                            >
+                                                تعديل
+                                            </button>
 
-                                        <button
-                                            className="btn btn-sm btn-outline-danger"
-                                            onClick={(e) =>
-                                                handleDelete(e, item.id)
-                                            }
-                                        >
-                                            حذف
-                                        </button>
+                                            <button
+                                                className="btn btn-sm btn-outline-danger"
+                                                onClick={(e) =>
+                                                    handleDelete(e, item.id)
+                                                }
+                                            >
+                                                حذف
+                                            </button>
 
-                                    </td>
+                                        </td>
 
-                                </tr>
-                            ))}
+                                    </tr>
+                                ))}
                             </tbody>
 
                         </table>
