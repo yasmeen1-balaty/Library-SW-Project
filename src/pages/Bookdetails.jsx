@@ -24,11 +24,43 @@ export default function BookDetails() {
     if (!isLoggedIn) {
       alert('🔒 يجب تسجيل الدخول كعضو في الكلية لتتمكن من حجز الكتب.');
       navigate('/login');
-
-    } else {
-
-      alert(`✅ تم إرسال طلب حجز كتاب (${book.title}) بنجاح.`);
+      return;
     }
+
+    const oldReservations =
+      JSON.parse(localStorage.getItem('reservations')) || [];
+
+    const alreadyReserved = oldReservations.some(
+      (item) => item.id === book.id
+    );
+
+    if (alreadyReserved) {
+      alert('⚠️ هذا الكتاب محجوز مسبقًا.');
+      return;
+    }
+
+    const newReservation = {
+      id: book.id,
+      title: book.title,
+      author: book.author,
+      year: book.year,
+      isbn: book.isbn,
+      category: book.category,
+      image: book.image,
+      status: 'قيد الانتظار'
+    };
+
+    const updatedReservations = [
+      ...oldReservations,
+      newReservation
+    ];
+
+    localStorage.setItem(
+      'reservations',
+      JSON.stringify(updatedReservations)
+    );
+
+    alert(`✅ تم حجز كتاب (${book.title}) بنجاح.`);
   };
 
   return (
@@ -177,7 +209,7 @@ export default function BookDetails() {
                     fontSize: '18px'
                   }}
                 >
-                  حجز موعد لاستعارة الكتاب 🏛️
+                  موعد لاستعارة الكتاب 🏛️
                 </button>
 
               )}
