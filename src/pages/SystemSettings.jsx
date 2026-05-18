@@ -1,110 +1,131 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 
-export default function SystemSettings() {
+export default function Settings() {
+  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+  const userRole = localStorage.getItem('userRole');
 
-    const isLoggedIn =
-        localStorage.getItem("isLoggedIn") === "true";
+  if (!isLoggedIn) return <Navigate to="/login" />;
+  if (userRole !== 'librarian') return <Navigate to="/" />;
 
-    const userRole =
-        localStorage.getItem("userRole");
+  const [borrowDays, setBorrowDays] = useState(
+    localStorage.getItem('borrowDays') || '14'
+  );
 
-    if (!isLoggedIn)
-        return <Navigate to="/login" />;
+  const [maxBooks, setMaxBooks] = useState(
+    localStorage.getItem('maxBooks') || '3'
+  );
 
-    if (userRole !== "librarian")
-        return <Navigate to="/" />;
-    
-    return (
+  const [dailyFine, setDailyFine] = useState(
+    localStorage.getItem('dailyFine') || '1'
+  );
+
+  const [workHours, setWorkHours] = useState(
+    localStorage.getItem('workHours') || '8:00 AM - 3:00 PM'
+  );
+
+  const handleSave = (e) => {
+    e.preventDefault();
+
+    localStorage.setItem('borrowDays', borrowDays);
+    localStorage.setItem('maxBooks', maxBooks);
+    localStorage.setItem('dailyFine', dailyFine);
+    localStorage.setItem('workHours', workHours);
+
+    alert('تم حفظ إعدادات المكتبة بنجاح');
+  };
+
+  return (
+    <div
+      className="min-vh-100 pb-5"
+      dir="rtl"
+      style={{
+        backgroundColor: '#fffdfa',
+        paddingTop: '130px',
+        fontFamily: 'serif',
+      }}
+    >
+      <div className="container">
         <div
-            className="min-vh-100 py-5"
-            dir="rtl"
-            style={{
-                backgroundColor: "#fcfaf7",
-                marginTop: "100px"
-            }}
+          className="bg-white shadow-lg p-4 p-md-5 mx-auto"
+          style={{
+            maxWidth: '850px',
+            borderTop: '8px solid #ca8a04',
+            borderRadius: '6px',
+          }}
         >
-            <div className="container">
+          <h1
+            className="fw-bold mb-5 pb-4 border-bottom"
+            style={{ color: '#4A0404' }}
+          >
+            إعدادات المكتبة ⚙️
+          </h1>
 
-                <div className="row justify-content-center">
-                    <div className="col-md-8 col-lg-7">
-
-                        <div className="card shadow-lg border-0">
-
-                            <div className="card-body p-5">
-
-                                {/* Title */}
-                                <h2
-                                    className="fw-bold mb-4 pb-3 border-bottom"
-                                    style={{ color: "#4A0404" }}
-                                >
-                                    إعدادات وقوانين المكتبة ⚙️
-                                </h2>
-
-                                {/* Max Books */}
-                                <div className="mb-4">
-                                    <label className="form-label fw-bold">
-                                        الحد الأقصى للكتب المستعارة (لكل طالب)
-                                    </label>
-
-                                    <input
-                                        type="number"
-                                        defaultValue="3"
-                                        className="form-control"
-                                    />
-                                </div>
-
-                                {/* Borrow Period */}
-                                <div className="mb-4">
-                                    <label className="form-label fw-bold">
-                                        مدة الاستعارة الافتراضية (بالأيام)
-                                    </label>
-
-                                    <input
-                                        type="number"
-                                        defaultValue="14"
-                                        className="form-control"
-                                    />
-                                </div>
-
-                                {/* Late Fee */}
-                                <div className="mb-4">
-                                    <label className="form-label fw-bold">
-                                        غرامة التأخير اليومية (شيكل)
-                                    </label>
-
-                                    <input
-                                        type="number"
-                                        defaultValue="1"
-                                        className="form-control"
-                                    />
-                                </div>
-
-                                {/* Alert */}
-                                <div className="alert alert-primary mb-4">
-                                    سيتم تطبيق هذه القوانين تلقائياً على كافة طلاب
-                                    كلية عندليب العمد عند ربط النظام مع الباك إيند.
-                                </div>
-
-                                {/* Button */}
-                                <button
-                                    className="btn w-100 text-white fw-bold py-3"
-                                    style={{
-                                        backgroundColor: "#4A0404"
-                                    }}
-                                >
-                                    حفظ الإعدادات الجديدة
-                                </button>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-                </div>
-
+          <form onSubmit={handleSave} className="row g-4 text-end">
+            <div className="col-12 col-md-6">
+              <label className="form-label fw-bold">
+                عدد أيام الاستعارة
+              </label>
+              <input
+                type="number"
+                className="form-control text-end"
+                value={borrowDays}
+                onChange={(e) => setBorrowDays(e.target.value)}
+              />
             </div>
-        </div>
-    );
-}
 
+            <div className="col-12 col-md-6">
+              <label className="form-label fw-bold">
+                الحد الأقصى للكتب
+              </label>
+              <input
+                type="number"
+                className="form-control text-end"
+                value={maxBooks}
+                onChange={(e) => setMaxBooks(e.target.value)}
+              />
+            </div>
+
+            <div className="col-12 col-md-6">
+              <label className="form-label fw-bold">
+                الغرامة اليومية
+              </label>
+              <input
+                type="number"
+                className="form-control text-end"
+                value={dailyFine}
+                onChange={(e) => setDailyFine(e.target.value)}
+              />
+            </div>
+
+            <div className="col-12 col-md-6">
+              <label className="form-label fw-bold">
+                أوقات الدوام
+              </label>
+              <input
+                type="text"
+                className="form-control text-end"
+                value={workHours}
+                onChange={(e) => setWorkHours(e.target.value)}
+              />
+            </div>
+
+            <div className="col-12">
+              <button
+                type="submit"
+                className="btn w-100 text-white fw-bold mt-3"
+                style={{
+                  backgroundColor: '#4A0404',
+                  padding: '14px',
+                  fontSize: '18px',
+                }}
+              >
+                حفظ الإعدادات
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
+}

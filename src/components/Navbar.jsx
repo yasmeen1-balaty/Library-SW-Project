@@ -17,7 +17,6 @@ export default function Navbar() {
     localStorage.removeItem("userRole");
     localStorage.removeItem("userName");
     localStorage.removeItem("userEmail");
-    localStorage.removeItem("reservations");
 
     navigate("/login");
     window.location.reload();
@@ -113,6 +112,20 @@ export default function Navbar() {
                     </Link>
                   </li>
 
+                  <li>
+                    <Link to="/borrowing-history" className="dropdown-item">
+                      سجل الاستعارات
+                    </Link>
+                  </li>
+
+                  <li>
+                    <Link
+                      to="/manage-requests"
+                      className="dropdown-item"
+                    >
+                      إدارة طلبات الاستعارة
+                    </Link>
+                  </li>
                 </ul>
               </li>
             )}
