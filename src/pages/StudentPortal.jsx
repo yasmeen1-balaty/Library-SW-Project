@@ -17,7 +17,7 @@ export default function StudentPortal() {
   const academicInfo = {
     id: '202110542',
     major: 'تمريض - سنة ثالثة',
-    expiry: 'يونيو 2025',
+    expiry: 'يونيو 2026',
   };
 
   if (!isLoggedIn) return <Navigate to="/login" />;
@@ -315,7 +315,7 @@ export default function StudentPortal() {
                         className="text-muted mt-1 mb-0"
                         style={{ fontSize: '12px' }}
                       >
-                        تاريخ الاستلام: 10/05/2024
+                        تاريخ الاستلام: 14/05/2026
                       </p>
                     </div>
                   </div>
