@@ -8,6 +8,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import BookDetails from "./pages/Bookdetails";
 import Login from "./pages/login";
 import Register from "./pages/Register";
+import StudentPortal from "./pages/StudentPortal";
 function App() {
   return (
     <BrowserRouter>
@@ -20,6 +21,7 @@ function App() {
         <Route path="/book/:id" element={<BookDetails />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/student-portal" element={<StudentPortal />} />
 
       </Routes>
       <Footer />
