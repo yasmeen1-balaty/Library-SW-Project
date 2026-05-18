@@ -9,6 +9,7 @@ import BookDetails from "./pages/Bookdetails";
 import Login from "./pages/login";
 import Register from "./pages/Register";
 import StudentPortal from "./pages/StudentPortal";
+import Contact from "./pages/Contact";
 function App() {
   return (
     <BrowserRouter>
@@ -22,7 +23,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/student-portal" element={<StudentPortal />} />
-
+        <Route path="/contact" element={<Contact />} />
+        
       </Routes>
       <Footer />
     </BrowserRouter>
