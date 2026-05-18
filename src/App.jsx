@@ -10,11 +10,27 @@ import Login from "./pages/login";
 import Register from "./pages/Register";
 import StudentPortal from "./pages/StudentPortal";
 import Contact from "./pages/Contact";
+
+import UserManagement from "./pages/UserManagement";
+import FinancialReports from "./pages/FinancialReports";
+import SystemSettings from "./pages/SystemSettings";
+
 function App() {
-  return (
-    <BrowserRouter>
-    <ScrollToTop />
-      <Navbar />
+    return (
+        <BrowserRouter>
+            <ScrollToTop />
+            <Navbar />
+
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/catalog" element={<Catalog />} />
+                <Route path="/book/:id" element={<BookDetails />} />
+
+                {/* admin pages-muna */}
+                <Route path="/users" element={<UserManagement />} />
+                <Route path="/financial" element={<FinancialReports />} />
+                <Route path="/settings" element={<SystemSettings />} />
+            </Routes>
 
       <Routes>
         <Route path="/" element={<Home />} />
@@ -29,6 +45,9 @@ function App() {
       <Footer />
     </BrowserRouter>
   );
+            <Footer />
+        </BrowserRouter>
+    );
 }
 
 export default App;
