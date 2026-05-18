@@ -30,21 +30,15 @@ function App() {
                 <Route path="/users" element={<UserManagement />} />
                 <Route path="/financial" element={<FinancialReports />} />
                 <Route path="/settings" element={<SystemSettings />} />
+
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/student-portal" element={<StudentPortal />} />
+                <Route path="/contact" element={<Contact />} />
             </Routes>
 
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/catalog" element={<Catalog />} />
-        <Route path="/book/:id" element={<BookDetails />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/student-portal" element={<StudentPortal />} />
-        <Route path="/contact" element={<Contact />} />
-        
-      </Routes>
-      <Footer />
-    </BrowserRouter>
-  );
+
+            );
             <Footer />
         </BrowserRouter>
     );
